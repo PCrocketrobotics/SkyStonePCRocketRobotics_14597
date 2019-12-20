@@ -29,10 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -61,7 +65,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous", group="Pushbot")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="BlueFoundation", group="Pushbot")
 public class Autonomous_2 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -69,10 +73,11 @@ public class Autonomous_2 extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final int     COUNTS_PER_MOTOR_REV    = 28 ;    // Motor with 1:1 gear ratio
-    static final int     DRIVE_GEAR_REDUCTION    = 12 ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 10.5 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH_DOUBLE         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
+
 
 
     @Override
@@ -86,10 +91,8 @@ public class Autonomous_2 extends LinearOpMode {
 
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
+        telemetry.addData("Status", "Init Hardware");    //
         telemetry.update();
-
-
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0", "Starting at %7d :%7d",
@@ -97,85 +100,160 @@ public class Autonomous_2 extends LinearOpMode {
                 robot.right_rear.getCurrentPosition(),
                 robot.left_front.getCurrentPosition(),
                 robot.right_front.getCurrentPosition());
-
+/**
         telemetry.update();
+        robot.servo_right.setPosition(0.5);
+        robot.servo_left.setPosition(0.5);
 
+        sleep( 2000);
+        telemetry.update();
+        robot.servo_right.setPosition(0.2);
+        robot.servo_left.setPosition(0.2);
+*/
 
-
+        sleep( 2000);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-
-
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         if (opModeIsActive()) {
-            robot.left_front.setDirection(DcMotor.Direction.REVERSE);
 
             robot.left_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.left_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.right_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            robot.left_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            /**
+             * Move Forward 34 inches to Foundation
+             */
+
+            robot.left_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 34)); //34 = the number of inches we want to travel.
+            robot.right_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 34));
+            robot.right_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 34));
+            robot.left_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 34));
+
+            robot.left_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);                       //Should be before opModIsActive
             robot.right_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                                                                                     //The number multiplied by "COUNTS_PER_INCH_DOUBLE" is the inches the robot will travel.
-            robot.left_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 39)); //39 = the number of inches we want to travel.
-            robot.right_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 39));
-            robot.right_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 39));
-            robot.left_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 39));
+            robot.left_front.setPower(0.2);
+            robot.left_rear.setPower(0.2);
+            robot.right_front.setPower(0.2);
+            robot.right_rear.setPower(0.2);
 
-            robot.left_front.setPower(0.5);
-            robot.left_rear.setPower(0.5);
-            robot.right_front.setPower(0.5);
-            robot.right_rear.setPower(0.5);
+            //while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
+                telemetry.addLine("left wheels | ")
+                        .addData("front", robot.left_front.getCurrentPosition())
+                        .addData("back", robot.left_rear.getCurrentPosition());
+                telemetry.addLine("right wheels | ")
+                        .addData("front", robot.right_front.getCurrentPosition())
+                        .addData("back", robot.right_rear.getCurrentPosition());
 
+                telemetry.update();
+            sleep(5000);
+            //}
+
+            robot.servo_right.setPosition(0.2);
+            robot.servo_left.setPosition(0.2);
+
+            sleep(2000);
+            robot.left_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.left_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            robot.left_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -26));
+            robot.right_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -26));
+            robot.right_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -26));
+            robot.left_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -26));
+
+            robot.left_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            robot.left_front.setPower(0.4);
+            robot.left_rear.setPower(0.4);
+            robot.right_front.setPower(0.4);
+            robot.right_rear.setPower(0.4);
+
+            sleep(4000);
+/**
             while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
 
             }
 
-            robot.servo_right.setPosition(0.3214);
-            robot.servo_left.setPosition(0.3214);
+ */
 
-            robot.left_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -39));
-            robot.right_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -39));
-            robot.right_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -39));
-            robot.left_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -39));
+            robot.left_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.left_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right_rear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.right_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            robot.left_front.setPower(0.5);
-            robot.left_rear.setPower(0.5);
-            robot.right_front.setPower(0.5);
-            robot.right_rear.setPower(0.5);
+            robot.right_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 28));
+            robot.right_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * 28));
+            robot.left_front.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -28));
+            robot.left_rear.setTargetPosition((int)(COUNTS_PER_INCH_DOUBLE * -28));
 
-            while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
+            robot.left_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right_rear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            }
+            robot.left_front.setPower(0.4);
+            robot.left_rear.setPower(0.4);
+            robot.right_front.setPower(0.4);
+            robot.right_rear.setPower(0.4);
 
-            robot.servo_right.setPosition(-0.3214);
-            robot.servo_left.setPosition(-0.3214);
+            sleep(5000);
 
-            int blueValue = robot.colorSensor.blue();
-
-            while   (blueValue < 90)   {
+            robot.servo_right.setPosition(0.5);
+            robot.servo_left.setPosition(0.5);
 
 
-                robot.left_front.setPower(0.2);
-                robot.right_front.setPower(-0.2);
-                robot.right_rear.setPower(0.2);
-                robot.left_rear.setPower(-0.2);
-                blueValue = robot.colorSensor.blue();
+            robot.left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.left_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            robot.left_front.setPower(0.2);
+            robot.right_front.setPower(-0.2);
+            robot.right_rear.setPower(0.2);
+            robot.left_rear.setPower(-0.2);
+
+
+            float hsvValues[] = {0F, 0F, 0F};
+
+            final float values[] = hsvValues;
+
+            // sometimes it helps to multiply the raw RGB values with a scale factor
+            // to amplify/attentuate the measured values.
+            final double SCALE_FACTOR = 255;
+
+            Color.RGBToHSV((int) (robot.colorSensor.red() * SCALE_FACTOR),
+                    (int) (robot.colorSensor.green() * SCALE_FACTOR),
+                    (int) (robot.colorSensor.blue() * SCALE_FACTOR),
+                    hsvValues);
+
+            while   (robot.colorSensor.blue() < 3001)   {
+
+
+                telemetry.addData("Blue ", robot.colorSensor.blue());
+                telemetry.update();
+
+
             }
 
 
         }
-        robot.left_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
 }
 
 

@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -59,7 +60,12 @@ public class RR_Hardware
     public static final double MID_SERVO = 0;
     public static final double max_pos = 0.25;
     public static final double start_pos = 0;
-   // public DcMotor  leftArm     = null;
+    public DcMotor  arm_extender = null;
+    public Servo arm_gripper = null;
+
+
+
+    // public DcMotor  leftArm     = null;
     //public Servo    leftClaw    = null;
     //public Servo    rightClaw   = null;
 
@@ -98,15 +104,19 @@ public class RR_Hardware
         left_rear         = hwMap.get(DcMotor.class, "leftRear");
         right_front       = hwMap.get(DcMotor.class, "rightFront");
         right_rear        = hwMap.get(DcMotor.class, "rightRear");
+        arm_extender      = hwMap.get(DcMotor.class,  "armExtender");
+        arm_gripper       = hwMap.get(Servo.class,  "armGripper");
         servo_left        = hwMap.get(Servo.class, "servoLeft");
         servo_right       = hwMap.get(Servo.class,"servoRight");
 
         colorSensor       = hwMap.get(ColorSensor.class, "sensor_color_distance");
 
-        left_rear.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        left_front.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        right_rear.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        right_front.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+
+
+        left_rear.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        left_front.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        right_rear.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        right_front.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         left_front.setPower(0);
@@ -121,10 +131,11 @@ public class RR_Hardware
         right_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         left_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_rear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        servo_right.scaleRange(0, 1);
-        servo_left.scaleRange(0, 1);
+        servo_right.scaleRange(-1, 1);
+        servo_left.scaleRange(-1, 1);
 
-
+        servo_left.setDirection(Servo.Direction.REVERSE);
+        servo_right.setDirection(Servo.Direction.FORWARD);
 
         //TO DO: SET MOTORS TO COAST AND BREAK
     }

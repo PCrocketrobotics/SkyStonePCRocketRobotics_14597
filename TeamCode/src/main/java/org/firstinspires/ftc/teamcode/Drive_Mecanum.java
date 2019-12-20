@@ -55,25 +55,12 @@ public class Drive_Mecanum extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        double drive;
-        double rotation;
-        double Mag;
-        double angle;
-        double v1;
-        double v2;
-        double v3;
-        double v4;
-        double servo;
-        double clawOffset = 0;
-        final double CLAW_SPEED  = .5;
-        double  servoleftpos;
-        double servorightpos;
-
-
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+
+        double grip_start_pos = robot.arm_gripper.getPosition();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -93,36 +80,37 @@ public class Drive_Mecanum extends LinearOpMode {
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
-            drive = gamepad1.left_stick_y;
-            rotation = gamepad1.left_stick_x;
-servoleftpos = robot.servo_left.getPosition();
-servorightpos = robot.servo_right.getPosition();
-            telemetry.addData("Servo Position", "%5.2f", servoleftpos);
-            telemetry.addData("Servo Position", "%5.2f", servorightpos);
+
+
+            telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
+            telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
+            telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
+            telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
+            telemetry.addData("Servo Position", "%5.2f", robot.arm_gripper.getPosition());
 
             telemetry.update();
 
 
-
+            // Move both servos to new position.  Assume servos are mirror image of each other.
             if (gamepad1.dpad_up){
-                robot.servo_right.setPosition(0.1);
+                robot.servo_right.setPosition(0.2);
                 robot.servo_left.setPosition(0.2);
             }
             if (gamepad1.dpad_down){
                 robot.servo_right.setPosition(0);
                 robot.servo_left.setPosition(0);
             }
-            // Move both servos to new position.  Assume servos are mirror image of each other.
+
+            //TEST
+            robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
 
 
-            // Move both servos to new position.  Assume servos are mirror image of each other.
-            //clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-            //robot.servo_left.setPosition(robot.MID_SERVO + clawOffset);
-            //robot.servo_right.setPosition(robot.MID_SERVO - clawOffset);
 
+            //Fancy math to drive mecanum wheels
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
+            //double rightX = gamepad1.right_stick_x;
+            double rightX = gamepad1.right_trigger - gamepad1.left_trigger;
 
             final double V1 = r * Math.cos(robotangle) + rightX;
             final double V2 = r * Math.sin(robotangle) - rightX;
@@ -137,26 +125,9 @@ servorightpos = robot.servo_right.getPosition();
 
             //Gamepad2
 
-            //set the shoulder to move when left stick is moved up or down
-
-
-            //set the arm extender to extend or retract when right stick is moved up or down
-
-            telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
-            telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
 
 
 
-
-
-
-
-
-            // Send telemetry message to signify robot running;
-            //telemetry.addData("left",  "%.2f", leftPower);
-            //telemetry.addData("right", "%.2f", rightPower);
-
-            telemetry.update();
             // PROGRAM ENDS HERE -------------------------------------------------------------------------------------
         }
     }

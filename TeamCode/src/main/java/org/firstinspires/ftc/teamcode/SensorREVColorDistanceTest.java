@@ -27,13 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -53,8 +52,8 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Sensor: REVColorDistance", group = "Sensor")
-@Disabled   // comment out or remove this line to enable this opmode                  // Comment this out to add to the opmode list
-public class SensorREVColorDistance extends LinearOpMode {
+                          // Comment this out to add to the opmode list
+public class SensorREVColorDistanceTest extends LinearOpMode {
 
     /**
      * Note that the REV Robotics Color-Distance incorporates two sensors into one device.
