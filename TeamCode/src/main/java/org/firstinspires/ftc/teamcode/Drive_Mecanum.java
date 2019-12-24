@@ -97,8 +97,8 @@ public class Drive_Mecanum extends LinearOpMode {
                 robot.servo_left.setPosition(0.2);
             }
             if (gamepad1.dpad_down){
-                robot.servo_right.setPosition(0);
-                robot.servo_left.setPosition(0);
+                robot.servo_right.setPosition(0.5);
+                robot.servo_left.setPosition(0.5);
             }
 
             //TEST
@@ -124,7 +124,7 @@ public class Drive_Mecanum extends LinearOpMode {
 
 
             //Gamepad2
-
+            robot.arm_extender.setPower(gamepad2.right_stick_y);
 
 
 

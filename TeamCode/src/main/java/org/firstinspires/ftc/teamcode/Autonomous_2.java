@@ -100,16 +100,7 @@ public class Autonomous_2 extends LinearOpMode {
                 robot.right_rear.getCurrentPosition(),
                 robot.left_front.getCurrentPosition(),
                 robot.right_front.getCurrentPosition());
-/**
-        telemetry.update();
-        robot.servo_right.setPosition(0.5);
-        robot.servo_left.setPosition(0.5);
 
-        sleep( 2000);
-        telemetry.update();
-        robot.servo_right.setPosition(0.2);
-        robot.servo_left.setPosition(0.2);
-*/
 
         sleep( 2000);
         // Wait for the game to start (driver presses PLAY)
@@ -176,12 +167,12 @@ public class Autonomous_2 extends LinearOpMode {
             robot.left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.left_front.setPower(0.4);
-            robot.left_rear.setPower(0.4);
-            robot.right_front.setPower(0.4);
-            robot.right_rear.setPower(0.4);
+            robot.left_front.setPower(0.25);
+            robot.left_rear.setPower(0.25);
+            robot.right_front.setPower(0.25);
+            robot.right_rear.setPower(0.25);
 
-            sleep(4000);
+            sleep(5000);
 /**
             while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
 
@@ -204,10 +195,10 @@ public class Autonomous_2 extends LinearOpMode {
             robot.left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            robot.left_front.setPower(0.4);
-            robot.left_rear.setPower(0.4);
-            robot.right_front.setPower(0.4);
-            robot.right_rear.setPower(0.4);
+            robot.left_front.setPower(0.25);
+            robot.left_rear.setPower(0.25);
+            robot.right_front.setPower(0.25);
+            robot.right_rear.setPower(0.25);
 
             sleep(5000);
 
@@ -220,9 +211,9 @@ public class Autonomous_2 extends LinearOpMode {
             robot.left_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.right_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            robot.left_front.setPower(0.2);
+            robot.left_front.setPower(-0.2);
             robot.right_front.setPower(-0.2);
-            robot.right_rear.setPower(0.2);
+            robot.right_rear.setPower(-0.2);
             robot.left_rear.setPower(-0.2);
 
 
@@ -247,7 +238,10 @@ public class Autonomous_2 extends LinearOpMode {
 
 
             }
-
+            robot.left_front.setPower(0);
+            robot.right_front.setPower(0);
+            robot.right_rear.setPower(0);
+            robot.left_rear.setPower(0);
 
         }
 

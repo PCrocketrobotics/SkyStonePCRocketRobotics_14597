@@ -54,7 +54,8 @@ public class RR_Hardware
     public Orientation lastAngles = new Orientation();
     public DistanceSensor distanceSensor;
     public ColorSensor colorSensor;
-    public BNO055IMU imu;
+    public BNO055IMU imu_hub1;
+    public BNO055IMU imu_hub10;
     public Servo servo_left = null;
     public Servo servo_right = null;
     public static final double MID_SERVO = 0;
@@ -95,8 +96,8 @@ public class RR_Hardware
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        imu = hwMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        imu_hub1 = hwMap.get(BNO055IMU.class, "imu_hub1");
+        imu_hub1.initialize(parameters);
 
 
         // Define and Initialize Motors
@@ -136,6 +137,9 @@ public class RR_Hardware
 
         servo_left.setDirection(Servo.Direction.REVERSE);
         servo_right.setDirection(Servo.Direction.FORWARD);
+
+        arm_extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        arm_extender.setPower(0);
 
         //TO DO: SET MOTORS TO COAST AND BREAK
     }
