@@ -89,7 +89,7 @@ public class Autonomous extends LinearOpMode {
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
+        telemetry.addData("Status", "Resetting  Encoders");    //
         telemetry.update();
 
 
