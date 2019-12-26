@@ -52,8 +52,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Disabled
 public class ScanServo extends LinearOpMode {
 
-    static final double INCREMENT   = 0.01;     // amount to slew servo each CYCLE_MS cycle
-    static final int    CYCLE_MS    =   5000;     // period of each cycle
+    static final double INCREMENT   = 0.1;     // amount to slew servo each CYCLE_MS cycle
+    static final int    CYCLE_MS    =   9000;     // period of each cycle
     static final double MAX_POS     =  1.0;     // Maximum rotational position
     static final double MIN_POS     =  0.0;     // Minimum rotational position
 
@@ -68,7 +68,7 @@ public class ScanServo extends LinearOpMode {
 
         // Connect to servo (Assume PushBot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
-        servo = hardwareMap.get(Servo.class, "servoLeft");
+        servo = hardwareMap.get(Servo.class, "armGripper");
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to scan Servo." );
@@ -100,6 +100,7 @@ public class ScanServo extends LinearOpMode {
             // Display the current value
             telemetry.addData("Servo Position", "%5.2f", position);
             telemetry.addData(">", "Press Stop to end test." );
+            telemetry.addData("Actual Servo", servo.getPosition());
             telemetry.update();
 
             // Set the servo to the new position and pause;
