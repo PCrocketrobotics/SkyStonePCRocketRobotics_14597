@@ -59,11 +59,13 @@ public class Drive_Mecanum extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-
+        robot.arm_gripper.setPosition(0.5);
+        sleep(1000);
         double grip_start_pos = robot.arm_gripper.getPosition();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Gripper Start ", robot.arm_gripper.getPosition());
         telemetry.update();
 
 

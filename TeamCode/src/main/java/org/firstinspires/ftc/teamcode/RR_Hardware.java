@@ -141,6 +141,8 @@ public class RR_Hardware
         arm_extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm_extender.setPower(0);
 
+        arm_gripper.scaleRange(0.3, 0.9);
+
         //TO DO: SET MOTORS TO COAST AND BREAK
     }
  }
