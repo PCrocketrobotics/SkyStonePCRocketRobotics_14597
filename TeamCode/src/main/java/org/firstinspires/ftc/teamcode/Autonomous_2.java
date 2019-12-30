@@ -73,13 +73,10 @@ public class Autonomous_2 extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final int     COUNTS_PER_MOTOR_REV    = 28 ;    // Motor with 1:1 gear ratio
-    static final double     DRIVE_GEAR_REDUCTION    = 10.5 ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 10.5 ;     // Rev Ultraplanetary Motor 12:1 but actual is 10.5:1
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH_DOUBLE         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-
-
-
     @Override
     public void runOpMode() {
 
