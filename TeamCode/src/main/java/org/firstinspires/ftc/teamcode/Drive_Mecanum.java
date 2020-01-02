@@ -78,20 +78,16 @@ public class Drive_Mecanum extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
-
 
             telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.arm_gripper.getPosition());
-
             telemetry.update();
-
 
             // Move both servos to new position.  Assume servos are mirror image of each other.
             if (gamepad1.dpad_up){
@@ -105,9 +101,6 @@ public class Drive_Mecanum extends LinearOpMode {
 
             //TEST
             robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
-
-
-
             //Fancy math to drive mecanum wheels
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
@@ -124,11 +117,8 @@ public class Drive_Mecanum extends LinearOpMode {
             robot.left_rear.setPower((V3));
             robot.right_rear.setPower(V4);
 
-
             //Gamepad2
             robot.arm_extender.setPower(gamepad2.right_stick_y);
-
-
 
             // PROGRAM ENDS HERE -------------------------------------------------------------------------------------
         }

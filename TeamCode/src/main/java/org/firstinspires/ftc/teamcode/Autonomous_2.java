@@ -236,11 +236,7 @@ public class Autonomous_2 extends LinearOpMode {
             robot.right_front.setPower(0);
             robot.right_rear.setPower(0);
             robot.left_rear.setPower(0);
-
         }
-
-
-
 
 }
 
