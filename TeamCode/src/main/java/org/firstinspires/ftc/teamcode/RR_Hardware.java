@@ -125,7 +125,6 @@ public class RR_Hardware
         left_rear.setPower(0);
         right_rear.setPower(0);
         //leftArm.setPower(0);
-
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         left_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

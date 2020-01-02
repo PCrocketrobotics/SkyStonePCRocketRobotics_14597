@@ -90,11 +90,11 @@ public class Drive_Mecanum extends LinearOpMode {
             telemetry.update();
 
             // Move both servos to new position.  Assume servos are mirror image of each other.
-            if (gamepad1.dpad_up){
+            if (gamepad1.left_bumper){
                 robot.servo_right.setPosition(0.2);
                 robot.servo_left.setPosition(0.2);
             }
-            if (gamepad1.dpad_down){
+            if (gamepad1.right_bumper){
                 robot.servo_right.setPosition(0.5);
                 robot.servo_left.setPosition(0.5);
             }
@@ -104,18 +104,18 @@ public class Drive_Mecanum extends LinearOpMode {
             //Fancy math to drive mecanum wheels
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            //double rightX = gamepad1.right_stick_x;
-            double rightX = gamepad1.right_trigger - gamepad1.left_trigger;
+            double rightX = gamepad1.right_stick_x;
 
             final double V1 = r * Math.cos(robotangle) + rightX;
             final double V2 = r * Math.sin(robotangle) - rightX;
             final double V3 = r * Math.sin(robotangle) + rightX;
             final double V4 = r * Math.cos(robotangle) - rightX;
+            final double speed_reduction = .75;
 
-            robot.left_front.setPower(V1);
-            robot.right_front.setPower(V2);
-            robot.left_rear.setPower((V3));
-            robot.right_rear.setPower(V4);
+            robot.left_front.setPower(V1 * speed_reduction);
+            robot.right_front.setPower(V2 * speed_reduction);
+            robot.left_rear.setPower(V3 * speed_reduction);
+            robot.right_rear.setPower(V4 * speed_reduction);
 
             //Gamepad2
             robot.arm_extender.setPower(gamepad2.right_stick_y);
