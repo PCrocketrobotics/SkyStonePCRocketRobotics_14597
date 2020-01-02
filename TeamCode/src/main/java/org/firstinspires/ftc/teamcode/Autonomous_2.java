@@ -226,14 +226,11 @@ public class Autonomous_2 extends LinearOpMode {
                     (int) (robot.colorSensor.green() * SCALE_FACTOR),
                     (int) (robot.colorSensor.blue() * SCALE_FACTOR),
                     hsvValues);
-
+            // Loop to stop robot when its over the blue tape under bridge.
+            // Blue value from color sensor is ~4500
             while   (robot.colorSensor.blue() < 3001)   {
-
-
                 telemetry.addData("Blue ", robot.colorSensor.blue());
                 telemetry.update();
-
-
             }
             robot.left_front.setPower(0);
             robot.right_front.setPower(0);
