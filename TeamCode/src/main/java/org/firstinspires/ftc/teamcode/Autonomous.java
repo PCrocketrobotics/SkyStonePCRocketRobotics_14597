@@ -65,6 +65,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous", group="Pushbot")
+@Disabled
 public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -66,6 +67,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous_2", group="Pushbot")
+@Disabled
     public class Autonomous_2 extends LinearOpMode {
 
     /* Declare OpMode members. */

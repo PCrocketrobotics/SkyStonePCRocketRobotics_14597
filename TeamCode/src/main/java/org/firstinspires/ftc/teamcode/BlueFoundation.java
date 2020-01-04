@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="BlueFoundation", group="Pushbot")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="BlueFoundation - Final", group="Production")
 public class BlueFoundation extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -98,7 +98,6 @@ public class BlueFoundation extends LinearOpMode {
                 robot.right_front.getCurrentPosition());
 
 
-        sleep(2000);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
@@ -178,7 +177,7 @@ public class BlueFoundation extends LinearOpMode {
                     hsvValues);
             // Loop to stop robot when its over the blue tape under bridge.
             // Blue value from color sensor is ~4500
-            while (robot.colorSensor.blue() < 2500) {
+            while ((robot.colorSensor.blue() < 2500) && opModeIsActive()) {
                 telemetry.addData("Blue", robot.colorSensor.blue());
                 telemetry.update();
             }

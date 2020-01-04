@@ -63,6 +63,7 @@ public class RR_Hardware
     public static final double start_pos = 0;
     public DcMotor  arm_extender = null;
     public Servo arm_gripper = null;
+    public  Servo capstone = null;
 
 
 
@@ -109,8 +110,10 @@ public class RR_Hardware
         arm_gripper       = hwMap.get(Servo.class,  "armGripper");
         servo_left        = hwMap.get(Servo.class, "servoLeft");
         servo_right       = hwMap.get(Servo.class,"servoRight");
+        capstone          = hwMap.get(Servo.class, "capstone");
 
         colorSensor       = hwMap.get(ColorSensor.class, "sensor_color_distance");
+
 
 
 
@@ -141,8 +144,15 @@ public class RR_Hardware
         arm_extender.setPower(0);
 
         arm_gripper.scaleRange(0.3, 0.9);
+        capstone.scaleRange(-1, 1);
+
+        capstone.setDirection(Servo.Direction.FORWARD);
 
         //TO DO: SET MOTORS TO COAST AND BREAK
+        left_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
  }
 

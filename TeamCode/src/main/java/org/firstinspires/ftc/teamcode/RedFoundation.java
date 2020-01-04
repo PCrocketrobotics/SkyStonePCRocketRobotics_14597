@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="RedFoundation", group="Pushbot")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="RedFoundation - Final", group="Production")
 public class RedFoundation extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -178,7 +178,7 @@ public class RedFoundation extends LinearOpMode {
                     hsvValues);
             // Loop to stop robot when its over the red tape under bridge.
             // Red value from color sensor is ~4500
-            while (robot.colorSensor.red() < 2500) {
+            while ((robot.colorSensor.red() < 2500) && opModeIsActive()) {
                 telemetry.addData("Red ", robot.colorSensor.red());
                 telemetry.update();
             }

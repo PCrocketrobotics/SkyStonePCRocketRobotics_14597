@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Park_Drive - Final", group="Production")
-public class Park_Drive extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Park_Drive_Skystone_Sensor - Final", group="Production")
+@Disabled
+public class Park_Drive_Skystone_Sensor extends LinearOpMode {
 
     /* Declare OpMode members. */
     RR_Hardware robot = new RR_Hardware();   // Use a Pushbot's hardware
@@ -62,7 +64,7 @@ public class Park_Drive extends LinearOpMode {
                     hsvValues);
             // Loop to stop robot when its over the blue or red tape under bridge.
             // Blue value from color sensor is ~4500
-            while (( (robot.colorSensor.blue() < 2500) || (robot.colorSensor.red() > 2500) ) && opModeIsActive()) {
+            while ((robot.colorSensor.blue() < 2500) || (robot.colorSensor.red() > 2500)) {
                 telemetry.addData("Blue", robot.colorSensor.blue());
                 telemetry.update();
             }

@@ -28,59 +28,47 @@
  */
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
-import java.util.concurrent.TimeUnit;
 
-/**
- * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
- * All device access is managed through the HardwarePushbot class.
- * The code is structured as a LinearOpMode
- *
- * This particular OpMode executes a POV Game style Teleop for a PushBot
- * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
- * It raises and lowers the claw using the Gampad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
 
-@TeleOp(name="TeleOp: TeleopDrive - Final")
-public class Drive_Mecanum extends LinearOpMode {
+@TeleOp(name="TeleOp: TeleopDrive - Prototype")
+public class Prototype_Drive_Mecanum extends LinearOpMode {
 
-    /* Declare OpMode members. */
-    RR_Hardware   robot  = new RR_Hardware();
+    //Declare OpMode members
+    RR_Hardware robot  = new RR_Hardware();
 
     @Override
     public void runOpMode() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
+
+
+        // Initialize the hardware variables.
+        // The init() method of the hardware class does all the work here
         robot.init(hardwareMap);
         robot.arm_gripper.setPosition(0.5);
-        //sleep(1000);
         double grip_start_pos = robot.arm_gripper.getPosition();
+        double swap = 1.0;
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.addData("Gripper Start ", robot.arm_gripper.getPosition());
         telemetry.update();
 
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
 
-        //PROGRAM STARTS HERE -----------------------------------------------------------------------------------------------
+        //PROGRAM STARTS HERE -------------------------------------------------------------------------------------------------------------------
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
-            // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
-            // This way it's also easy to just drive straight, or just turn.
+            /* Gamepad 1*/
+
+
+            if (gamepad1.start)     swap = -1.0;
+            else if (gamepad1.back) swap = 1.0;
 
             telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
@@ -97,49 +85,35 @@ public class Drive_Mecanum extends LinearOpMode {
                 robot.servo_left.setPosition(0.5);
             }
 
-            //TEST
+            //Apply gripper transformation
             robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
-            //Fancy math to drive mecanum wheels
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotangle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
 
-            //? broken controls?
-        /*
-            //TEST
-            robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
-            //Fancy math to drive mecanum wheels
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            //Fancy math to calculate mecanum wheels direction
+            double r          = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
-        */
+            double rightX     = gamepad1.right_stick_x * swap;
             final double V1 = r * Math.cos(robotangle) + rightX;
             final double V2 = r * Math.sin(robotangle) - rightX;
             final double V3 = r * Math.sin(robotangle) + rightX;
             final double V4 = r * Math.cos(robotangle) - rightX;
-            final double speed_reduction = .75;
-            /*
-            robot.left_front.setPower(V1 * speed_reduction);
-            robot.right_front.setPower(V2 * speed_reduction);
-            robot.left_rear.setPower(V3 * speed_reduction);
-            robot.right_rear.setPower(V4 * speed_reduction);
-             */
-            robot.left_front.setPower(Math.copySign(Math.pow(V1, 2), V1));
-            robot.right_front.setPower(Math.copySign(Math.pow(V2, 2), V2));
-            robot.left_rear.setPower(Math.copySign(Math.pow(V3, 2), V3));
-            robot.right_rear.setPower(Math.copySign(Math.pow(V4, 2), V4));
 
-            //Gamepad2
+            //Apply wheel drive
+            robot.left_front    .setPower(Math.copySign(Math.pow(V1, 2), V1) * swap);
+            robot.right_front   .setPower(Math.copySign(Math.pow(V2, 2), V2) * swap);
+            robot.left_rear     .setPower(Math.copySign(Math.pow(V3, 2), V3) * swap);
+            robot.right_rear    .setPower(Math.copySign(Math.pow(V4, 2), V4) * swap);
+
+
+            /* Gamepad 2*/
+
+
             robot.arm_extender.setPower(gamepad2.right_stick_y);
 
-            if (gamepad2.a) {
-                    robot.capstone.setPosition(.6);
-                }
-                else {
-                    robot.capstone.setPosition(0.0);
-            }
+            if (gamepad2.a) robot.capstone.setPosition(.6);
+            else robot.capstone.setPosition(0.0);
 
-            // PROGRAM ENDS HERE -------------------------------------------------------------------------------------
+
+            // PROGRAM ENDS HERE ----------------------------------------------------------------------------------------------------------------
         }
     }
 }
