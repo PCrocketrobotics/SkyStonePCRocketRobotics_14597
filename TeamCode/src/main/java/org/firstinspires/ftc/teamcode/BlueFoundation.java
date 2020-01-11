@@ -106,7 +106,7 @@ public class BlueFoundation extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Moving towards the foundation
-            mecanumDrive(34, 34, 34, 34, .25, 2000);
+            mecanumDrive(34, 34, 34, 34, .25, 2500);
 
             //while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
             telemetry.addLine("left wheels | ")
@@ -148,8 +148,11 @@ public class BlueFoundation extends LinearOpMode {
             //Moves towards the skybridge
             mecanumDrive(-18, -18, -18, -18, .4, 2000);
 
-            //Turns to allow more space through the bridge
-            mecanumDrive(5, 5, -5, -5, .25, 2000);
+            //Parks closest to neutral bridge
+           //mecanumDrive(5, 5, -5, -5, .25, 2000);
+
+            //Parks closest to wall
+            mecanumDrive(-5, -5, 5, 5, .25, 2000);
 
             //Moves the robot straight until it detects a certain value of blue or red
             robot.left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

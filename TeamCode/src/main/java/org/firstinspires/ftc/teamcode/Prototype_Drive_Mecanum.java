@@ -89,19 +89,29 @@ public class Prototype_Drive_Mecanum extends LinearOpMode {
             robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
 
             //Fancy math to calculate mecanum wheels direction
+            double speed_reduction = .75;
+            /*
             double r          = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
             double rightX     = gamepad1.right_stick_x * swap;
-            final double V1 = r * Math.cos(robotangle) + rightX;
-            final double V2 = r * Math.sin(robotangle) - rightX;
-            final double V3 = r * Math.sin(robotangle) + rightX;
-            final double V4 = r * Math.cos(robotangle) - rightX;
+             */
+            double r          = Math.hypot((gamepad1.left_trigger-gamepad1.right_trigger), gamepad1.left_stick_y);
+            double robotangle = Math.atan2(gamepad1.left_stick_y, (gamepad1.left_trigger-gamepad1.right_trigger)) - Math.PI / 4;
+            double rightX     = gamepad1.right_stick_x * swap;
+            double V1 = r * Math.cos(robotangle) + rightX;
+            double V2 = r * Math.sin(robotangle) - rightX;
+            double V3 = r * Math.sin(robotangle) + rightX;
+            double V4 = r * Math.cos(robotangle) - rightX;
+            if (r <= .75) V1 *= speed_reduction;
+            if (r <= .75) V2 *= speed_reduction;
+            if (r <= .75) V3 *= speed_reduction;
+            if (r <= .75) V4 *= speed_reduction;
 
             //Apply wheel drive
-            robot.left_front    .setPower(Math.copySign(Math.pow(V1, 2), V1) * swap);
-            robot.right_front   .setPower(Math.copySign(Math.pow(V2, 2), V2) * swap);
-            robot.left_rear     .setPower(Math.copySign(Math.pow(V3, 2), V3) * swap);
-            robot.right_rear    .setPower(Math.copySign(Math.pow(V4, 2), V4) * swap);
+            robot.left_front    .setPower(V1 * swap);
+            robot.right_front   .setPower(V2 * swap);
+            robot.left_rear     .setPower(V3 * swap);
+            robot.right_rear    .setPower(V4 * swap);
 
 
             /* Gamepad 2*/
