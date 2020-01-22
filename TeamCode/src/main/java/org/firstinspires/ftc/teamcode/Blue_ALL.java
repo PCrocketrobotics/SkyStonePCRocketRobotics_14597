@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -63,8 +64,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="BlueFoundation - Final", group="Production")
-public class BlueFoundation extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Blue_All", group="Production")
+@Disabled
+public class Blue_ALL extends LinearOpMode {
 
     /* Declare OpMode members. */
     RR_Hardware robot = new RR_Hardware();   // Use a Pushbot's hardware
@@ -105,67 +107,7 @@ public class BlueFoundation extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         if (opModeIsActive()) {
 
-            //Moving towards the foundation
-            mecanumDrive(34, 34, 34, 34, .25, 2500);
-
-            //while (robot.left_front.isBusy() || robot.left_rear.isBusy() || robot.right_rear.isBusy() || robot.right_front.isBusy()) {
-            telemetry.addLine("left wheels | ")
-                    .addData("front", robot.left_front.getCurrentPosition())
-                    .addData("back", robot.left_rear.getCurrentPosition());
-            telemetry.addLine("right wheels | ")
-                    .addData("front", robot.right_front.getCurrentPosition())
-                    .addData("back", robot.right_rear.getCurrentPosition());
-
-            telemetry.update();
-
-            //Lowers servos onto foundation
-            robot.servo_right.setPosition(0.2);
-            robot.servo_left.setPosition(0.2);
-
-            sleep(1000);
-
-            //Moves backwards with the foundation in tow
-            mecanumDrive(-28, -28, -28, -28, .25, 2000);
-
-            //Strafes towards the edge of the foundation
-            mecanumDrive(-20, 20, 20, -20, .7, 2000);
-
-            //Turns the foundation towards the building site
-            mecanumDrive(28, 28, -28, -28, .4, 2000);
-
-            //Strafes closer to the center of the foundation
-            mecanumDrive(20, -20, -20, 20, .55, 2000);
-
-            //Moves the foundation into the building site
-            mecanumDrive(20, 20, 20, 20, .25, 2000);
-
-            //Lifts servos off the foundation
-            robot.servo_right.setPosition(0.5);
-            robot.servo_left.setPosition(0.5);
-
-            sleep(1000);
-
-            //Moves towards the skybridge
-            mecanumDrive(-18, -18, -18, -18, .4, 2000);
-
-            //Parks closest to neutral bridge
-           //mecanumDrive(5, 5, -5, -5, .25, 2000);
-
-            //Parks closest to wall
-            mecanumDrive(-5, -5, 5, 5, .25, 2000);
-
-            //Moves the robot straight until it detects a certain value of blue or red
-            robot.left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.left_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.right_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-            robot.left_front.setPower(-0.18);
-            robot.right_front.setPower(-0.18);
-            robot.right_rear.setPower(-0.18);
-            robot.left_rear.setPower(-0.18);
-
-
+            //Sets up the devices for utalizing colors
             float hsvValues[] = {0F, 0F, 0F};
 
             final float values[] = hsvValues;
@@ -178,16 +120,63 @@ public class BlueFoundation extends LinearOpMode {
                     (int) (robot.colorSensor.green() * SCALE_FACTOR),
                     (int) (robot.colorSensor.blue() * SCALE_FACTOR),
                     hsvValues);
-            // Loop to stop robot when its over the blue tape under bridge.
-            // Blue value from color sensor is ~4500
-            while ((robot.colorSensor.blue() < 2500) && opModeIsActive()) {
-                telemetry.addData("Blue", robot.colorSensor.blue());
-                telemetry.update();
-            }
-            robot.left_front.setPower(0);
-            robot.right_front.setPower(0);
-            robot.right_rear.setPower(0);
-            robot.left_rear.setPower(0);
+
+            mecanumDrive(3, -3, -3, 3, 1, 1000);
+
+            //Moving towards the foundation
+            mecanumDrive(34, 34, 34, 34, .25, 1000);
+
+            //Lowers servos onto foundation
+            robot.servo_right.setPosition(0.2);
+            robot.servo_left.setPosition(0.2);
+
+            sleep(250);
+
+            //Moves backwards with the foundation in tow
+            mecanumDrive(-34, -34, -34, -34, .25, 2000);
+
+            //Lifts servos off the foundation
+            robot.servo_right.setPosition(0.5);
+            robot.servo_left.setPosition(0.5);
+
+            sleep(250);
+
+            //Strafes towards the skybridge
+            mecanumDrive(-50, 50, 50, -50, 1, 2000);
+
+            //Moves away from wall
+            mecanumDrive(-10, -10, -10, -10, .6, 1000);
+
+            //Turns in place
+            mecanumDrive(25.132, 25.132, -25.132, -25.132, .75, 1000);
+
+            //Moves towards skystone
+            mecanumDrive(21, 21, 21, 21, .75, 2000);
+
+           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
+               mecanumDrive(10, 10, 10, 10, .7, 2000);
+               robot.arm_gripper.setPosition(.2);
+               mecanumDrive(-30, -30, -30, -30, 1, 2000);
+               mecanumDrive(55, -55, -55, 55, 1, 2000);/
+           }
+           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
+               mecanumDrive(-7, 7, 7, -7, 1, 1000);
+           }
+           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
+                mecanumDrive(10, 10, 10, 10, .7, 2000);
+                robot.arm_gripper.setPosition(.2);
+           }
+           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
+                mecanumDrive(-7, 7, 7, -7, 1, 1000);
+           }
+           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
+                mecanumDrive(10, 10, 10, 10, .7, 2000);
+                robot.arm_gripper.setPosition(.2);
+           }
+           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
+                mecanumDrive(10, 10, 10, 10, .7, 2000);
+                robot.arm_gripper.setPosition(.2);
+           }
         }
 
     }

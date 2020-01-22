@@ -32,9 +32,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@Disabled
-@TeleOp(name="TeleOp: TeleopDrive - Prototype")
-public class Prototype_Drive_Mecanum extends LinearOpMode {
+
+@TeleOp(name="TeleopDrive - New")
+public class New_Drive extends LinearOpMode {
 
     //Declare OpMode members
     RR_Hardware robot  = new RR_Hardware();
@@ -49,6 +49,7 @@ public class Prototype_Drive_Mecanum extends LinearOpMode {
         robot.arm_gripper.setPosition(0.5);
         double grip_start_pos = robot.arm_gripper.getPosition();
         double swap = 1.0;
+        double speed_reduction = .75;
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -73,6 +74,7 @@ public class Prototype_Drive_Mecanum extends LinearOpMode {
             telemetry.addData("Servo Position", "%5.2f", robot.servo_left.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.servo_right.getPosition());
             telemetry.addData("Servo Position", "%5.2f", robot.arm_gripper.getPosition());
+            telemetry.addData("Speed Multiplier", speed_reduction);
             telemetry.update();
 
             // Move both servos to new position.  Assume servos are mirror image of each other.
@@ -89,12 +91,8 @@ public class Prototype_Drive_Mecanum extends LinearOpMode {
             robot.arm_gripper.setPosition(grip_start_pos + gamepad2.left_stick_y);
 
             //Fancy math to calculate mecanum wheels direction
-            double speed_reduction = .75;
-            /*
-            double r          = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotangle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX     = gamepad1.right_stick_x * swap;
-             */
+            if      (gamepad1.a) speed_reduction = .35;
+            else if (gamepad1.y) speed_reduction = .75;
             double r          = Math.hypot((gamepad1.left_trigger-gamepad1.right_trigger), gamepad1.left_stick_y);
             double robotangle = Math.atan2(gamepad1.left_stick_y, (gamepad1.left_trigger-gamepad1.right_trigger)) - Math.PI / 4;
             double rightX     = gamepad1.right_stick_x * swap;
@@ -102,16 +100,18 @@ public class Prototype_Drive_Mecanum extends LinearOpMode {
             double V2 = r * Math.sin(robotangle) - rightX;
             double V3 = r * Math.sin(robotangle) + rightX;
             double V4 = r * Math.cos(robotangle) - rightX;
+            /*
             if (r <= .75) V1 *= speed_reduction;
             if (r <= .75) V2 *= speed_reduction;
             if (r <= .75) V3 *= speed_reduction;
             if (r <= .75) V4 *= speed_reduction;
+            */
 
             //Apply wheel drive
-            robot.left_front    .setPower(V1 * swap);
-            robot.right_front   .setPower(V2 * swap);
-            robot.left_rear     .setPower(V3 * swap);
-            robot.right_rear    .setPower(V4 * swap);
+            robot.left_front    .setPower(V1 * swap * speed_reduction);
+            robot.right_front   .setPower(V2 * swap * speed_reduction);
+            robot.left_rear     .setPower(V3 * swap * speed_reduction);
+            robot.right_rear    .setPower(V4 * swap * speed_reduction);
 
 
             /* Gamepad 2*/

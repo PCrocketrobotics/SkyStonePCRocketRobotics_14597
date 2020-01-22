@@ -54,6 +54,7 @@ public class RR_Hardware
     public Orientation lastAngles = new Orientation();
     public DistanceSensor distanceSensor;
     public ColorSensor colorSensor;
+    public ColorSensor colorSensor2;
     public BNO055IMU imu_hub1;
     public BNO055IMU imu_hub10;
     public Servo servo_left = null;
@@ -112,7 +113,8 @@ public class RR_Hardware
         servo_right       = hwMap.get(Servo.class,"servoRight");
         capstone          = hwMap.get(Servo.class, "capstone");
 
-        colorSensor       = hwMap.get(ColorSensor.class, "sensor_color_distance");
+        colorSensor       = hwMap.get(ColorSensor.class, "Color_Sensor_1");
+        colorSensor2       = hwMap.get(ColorSensor.class, "Color_Sensor_2");
 
 
 
@@ -153,6 +155,7 @@ public class RR_Hardware
         left_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right_rear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm_extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
  }
 

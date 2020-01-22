@@ -161,6 +161,9 @@ public class RedFoundation extends LinearOpMode {
             robot.left_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.right_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+
+           // sleep(5000);
+
             robot.left_front.setPower(-0.18);
             robot.right_front.setPower(-0.18);
             robot.right_rear.setPower(-0.18);
