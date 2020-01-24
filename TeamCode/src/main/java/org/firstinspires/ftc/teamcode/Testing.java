@@ -29,12 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -64,14 +66,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Blue_All", group="Production")
-@Disabled
-public class Blue_ALL extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Testing", group="Production")
+public class Testing extends LinearOpMode {
 
     /* Declare OpMode members. */
     RR_Hardware robot = new RR_Hardware();   // Use a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
-
+    Orientation angles;
     static final int COUNTS_PER_MOTOR_REV = 28;    // Motor with 1:1 gear ratio
     static final double DRIVE_GEAR_REDUCTION = 10.5;     // Rev Ultraplanetary Motor 12:1 but actual is 10.5:1
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -100,6 +101,8 @@ public class Blue_ALL extends LinearOpMode {
                 robot.right_front.getCurrentPosition());
 
 
+
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
@@ -107,76 +110,30 @@ public class Blue_ALL extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         if (opModeIsActive()) {
 
-            //Sets up the devices for utalizing colors
-            float hsvValues[] = {0F, 0F, 0F};
+            angles   = robot.imu_hub1.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-            final float values[] = hsvValues;
+            robot.left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.left_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right_rear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            // sometimes it helps to multiply the raw RGB values with a scale factor
-            // to amplify/attentuate the measured values.
-            final double SCALE_FACTOR = 255;
+            robot.left_front.setPower(0);
+            robot.right_front.setPower(.1);
+            robot.right_rear.setPower(.1);
+            robot.left_rear.setPower(0);
 
-            Color.RGBToHSV((int) (robot.colorSensor.red() * SCALE_FACTOR),
-                    (int) (robot.colorSensor.green() * SCALE_FACTOR),
-                    (int) (robot.colorSensor.blue() * SCALE_FACTOR),
-                    hsvValues);
+            while (angles.firstAngle < 45) {
+                angles = robot.imu_hub1.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                telemetry.addData("Heading=", angles.firstAngle);
+                telemetry.update();
+            }
 
-            mecanumDrive(3, -3, -3, 3, 1, 1000);
+            robot.left_rear.setPower(0);
+            robot.left_front.setPower(0);
+            robot.right_rear.setPower(0);
+            robot.right_front.setPower(0);
 
-            //Moving towards the foundation
-            mecanumDrive(34, 34, 34, 34, .25, 1000);
 
-            //Lowers servos onto foundation
-            robot.servo_right.setPosition(0.2);
-            robot.servo_left.setPosition(0.2);
-
-            sleep(250);
-
-            //Moves backwards with the foundation in tow
-            mecanumDrive(-34, -34, -34, -34, .25, 2000);
-
-            //Lifts servos off the foundation
-            robot.servo_right.setPosition(0.5);
-            robot.servo_left.setPosition(0.5);
-
-            sleep(250);
-
-            //Strafes towards the skybridge
-            mecanumDrive(-50, 50, 50, -50, 1, 2000);
-
-            //Moves away from wall
-            mecanumDrive(-10, -10, -10, -10, .6, 1000);
-
-            //Turns in place
-            mecanumDrive(25.132, 25.132, -25.132, -25.132, .75, 1000);
-
-            //Moves towards skystone
-            mecanumDrive(21, 21, 21, 21, .75, 2000);
-
-           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
-               mecanumDrive(10, 10, 10, 10, .7, 2000);
-               robot.arm_gripper.setPosition(.2);
-               mecanumDrive(-30, -30, -30, -30, 1, 2000);
-               mecanumDrive(55, -55, -55, 55, 1, 2000);
-           }
-           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
-               mecanumDrive(-7, 7, 7, -7, 1, 1000);
-           }
-           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
-                mecanumDrive(10, 10, 10, 10, .7, 2000);
-                robot.arm_gripper.setPosition(.2);
-           }
-           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
-                mecanumDrive(-7, 7, 7, -7, 1, 1000);
-           }
-           if ((robot.colorSensor2.argb() > 100) && opModeIsActive()) {
-                mecanumDrive(10, 10, 10, 10, .7, 2000);
-                robot.arm_gripper.setPosition(.2);
-           }
-           else if ((robot.colorSensor2.argb() < 100) && opModeIsActive()); {
-                mecanumDrive(10, 10, 10, 10, .7, 2000);
-                robot.arm_gripper.setPosition(.2);
-           }
         }
 
     }
